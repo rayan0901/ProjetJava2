@@ -1,0 +1,24 @@
+* modifier les ask
+
+* ajouter les champs suplémentaire
+
+* Faire des statistiques (moyennes des salaires, âges etc, max, min, ecart-type, mediane, )
+
+* Hasher les mots de passe de la bdd (possible ?)
+
+* interface graphique ???
+
+* recherche (par filtre).
+
+* affichage par trie.
+
+
+* quand aucun programmeur erreur affichage
+
+//TODO : protéger les autres entrées type date, int et float (pas de salaire négatif etc)
+
+//TODO : gérer les affichages, notamment des helper
+
+// interface java FX
+
+// window Builder

@@ -1,0 +1,98 @@
+.table-view .column-header {
+    -fx-background-color: #196774;
+    -fx-text-fill: white;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+}
+
+.btnPane {
+    -fx-background-color: #363432 !important;
+    -fx-cursor: hand !important;
+}
+
+#returnListeBtn:hover {
+    -fx-font-weight: bold !important;
+    -fx-cursor: hand !important;
+}
+.table-row-cell:hover {
+    -fx-cursor: hand !important;
+}
+
+.btnPane:hover {
+    -fx-background-color: derive(#363432, 20%) !important;
+    -fx-cursor: hand !important;
+    -fx-transition: all 0.3s ease-in-out !important;
+}
+
+#addProgrammeurBtnForm:hover {
+    -fx-background-color: derive( #706513, 20%) !important;
+    -fx-cursor: hand !important;
+    -fx-transition: all 0.3s ease-in-out !important;
+}
+
+#editBtnShow:hover {
+    -fx-background-color: derive(#317302, 20%) !important;
+    -fx-cursor: hand !important;
+    -fx-transition: all 0.3s ease-in-out !important;
+}
+
+#deleteBtnShow:hover {
+    -fx-background-color: derive(#BF0404, 20%) !important;
+    -fx-cursor: hand !important;
+    -fx-transition: all 0.3s ease-in-out !important;
+}
+
+#addProgrammeurListeBtn:hover, #deleteProgrammeurListeBtn:hover {
+    -fx-background-color: derive(#196774, 20%) !important;
+    -fx-cursor: hand !important;
+    -fx-transition: all 0.3s ease-in-out !important;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: black;
+}
+
+#paneDashboardNumber {
+    -fx-background-color: #748CF1 !important;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #748CF1;
+}
+
+#paneDashboardPrime {
+    -fx-background-color: #A65656 !important;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #A65656;
+    -fx-font-color: black !important;
+}
+
+#paneDashboardSalary {
+    -fx-background-color: #B59D71 !important;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #B59D71;
+    -fx-font-color: black !important;
+}
+
+#tableProgrammeursDashBoard {
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 0 20px;
+    -fx-background-radius: 0 0 20px 20px;
+}
+
+
+
+
