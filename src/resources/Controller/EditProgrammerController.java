@@ -113,10 +113,7 @@ public class EditProgrammerController {
         alert.setContentText("Le programmeur a été modifié avec succès!");
 
         mainController.updatePrint();
-        mainController.getMainAddProgrammeur().setVisible(false);
-        mainController.getMainListePane().setVisible(false);
-        mainController.getEditProgrammeurPane().setVisible(false);
-        mainController.getShowProgrammeur().setVisible(false);
+        mainController.visibleFalseAll();
         CurrentPane = this.mainController.getMainListePane();
         CurrentPane.setVisible(true);
         alert.showAndWait();
@@ -128,10 +125,7 @@ public class EditProgrammerController {
     @FXML
     public void goToModifierProgrammeur() {
         updateMainController();
-        mainController.getMainAddProgrammeur().setVisible(false);
-        mainController.getMainListePane().setVisible(false);
-        mainController.getEditProgrammeurPane().setVisible(false);
-        mainController.getShowProgrammeur().setVisible(false);
+        mainController.visibleFalseAll();
         CurrentPane = this.mainController.getMainListePane();
         CurrentPane.setVisible(false);
         ActionDB dataDB = new ActionDB();
@@ -178,10 +172,7 @@ public class EditProgrammerController {
 
 
             // Change le Pane visible
-            mainController.getMainAddProgrammeur().setVisible(false);
-            mainController.getMainListePane().setVisible(false);
-            mainController.getEditProgrammeurPane().setVisible(false);
-            mainController.getShowProgrammeur().setVisible(false);
+            mainController.visibleFalseAll();
             CurrentPane = this.mainController.getEditProgrammeurPane();
             CurrentPane.setVisible(true);
         } else {

@@ -48,6 +48,12 @@
     -fx-transition: all 0.3s ease-in-out !important;
 }
 
+.settingsBtn:hover {
+    -fx-background-color: derive( #3e7c59, 20%) !important;
+    -fx-cursor: hand !important;
+    -fx-transition: all 0.3s ease-in-out !important;
+}
+
 #addProgrammeurListeBtn:hover, #deleteProgrammeurListeBtn:hover {
     -fx-background-color: derive(#196774, 20%) !important;
     -fx-cursor: hand !important;

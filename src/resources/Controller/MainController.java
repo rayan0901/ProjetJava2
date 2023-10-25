@@ -68,6 +68,15 @@ public class MainController implements Initializable {
     private Button editBtnShow;
 
     @FXML
+    private Button AddNProgBtn;
+
+    @FXML
+    private Button DeleteBddBtn;
+
+    @FXML
+    private Button UpdateBddBtn;
+
+    @FXML
     private Button deleteButtonProgrammeursListe;
 
     @FXML
@@ -131,6 +140,9 @@ public class MainController implements Initializable {
     private TextField searchBar;
 
     @FXML
+    private TextField valueAddProgSet;
+
+    @FXML
     private ImageView avatarImageView;
 
     @FXML
@@ -147,6 +159,9 @@ public class MainController implements Initializable {
 
     @FXML
     private GridPane dashboardPane;
+
+    @FXML
+    private GridPane settingsPane;
 
 
     /**ADD**/
@@ -217,6 +232,9 @@ public class MainController implements Initializable {
     @FXML
     private HandleClicksController handleClicksController = new HandleClicksController();
 
+    @FXML
+    private SettingsController settingsController = new SettingsController();
+
 
     /**
      * Initialise l'interface utilisateur et prépare les composants nécessaires.
@@ -229,13 +247,8 @@ public class MainController implements Initializable {
         DataBdd = new ActionDB();
         DataBdd.getConnexion();
         //DataBdd.fillBdd(200);
-
-        CurrentPane = MainListePane;
-        CurrentPane.setVisible(true);
-        MainAddProgrammeur.setVisible(false);
+        visibleFalseAll();
         dashboardPane.setVisible(true);
-        MainListePane.setVisible(false);
-        ShowProgrammeur.setVisible(false);
 
         labelNombreProgrammer.setText(DataBdd.getNumberOfProgrammerString());
         labelPrimeMoyen.setText(DataBdd.getPrimeMoyenneString() + "€");
@@ -295,6 +308,7 @@ public class MainController implements Initializable {
         showProgrammerController.setMainController(this);
         deleteProgrammerController.setMainController(this);
         handleClicksController.setMainController(this);
+        settingsController.setMainController(this);
     }
 
     /**
@@ -313,6 +327,16 @@ public class MainController implements Initializable {
 
         // Met à jour le tableau
         tableProgrammeurs.setItems(sortedData);
+    }
+
+    public void visibleFalseAll() {
+        getMainAddProgrammeur().setVisible(false);
+        getMainListePane().setVisible(false);
+        getEditProgrammeurPane().setVisible(false);
+        getShowProgrammeur().setVisible(false);
+        getDashboardPane().setVisible(false);
+        getSettingsPane().setVisible(false);
+
     }
 
 
@@ -352,12 +376,42 @@ public class MainController implements Initializable {
         handleClicksController.handleClicks(event);
     }
 
+    @FXML
+    public void updateBdd() {
+        settingsController.updateBdd();
+    }
+
+    @FXML
+    public void AllDeleteBdd() {
+        settingsController.AllDeleteBdd();
+    }
+
+    @FXML
+    public void addNProgrammer() {
+        settingsController.addNProgrammer(valueAddProgSet.getText());
+    }
+
     /*****************************************************************************************************************************************************************************************/
     /*****************************************************************************************************************************************************************************************/
     /**********************************************************************************GETTERS AND SETTERS************************************************************************************/
     /*****************************************************************************************************************************************************************************************/
     /*****************************************************************************************************************************************************************************************/
 
+    public Label getLabelNombreProgrammer() {
+        return labelNombreProgrammer;
+    }
+
+    public void setLabelNombreProgrammer(Label labelNombreProgrammer) {
+        this.labelNombreProgrammer = labelNombreProgrammer;
+    }
+
+    public GridPane getSettingsPane() {
+        return settingsPane;
+    }
+
+    public void setSettingsPane(GridPane settingsPane) {
+        this.settingsPane = settingsPane;
+    }
     public int getIdCourant() {
         return idCourant;
     }
@@ -770,6 +824,14 @@ public class MainController implements Initializable {
 
     public TextField getFieldDateBorn() {
         return FieldDateBorn;
+    }
+
+    public TextField getValueAddProgSet() {
+        return valueAddProgSet;
+    }
+
+    public void setValueAddProgSet(TextField valueAddProgSet) {
+        this.valueAddProgSet = valueAddProgSet;
     }
 
     public void setFieldDateBorn(TextField fieldDateBorn) {

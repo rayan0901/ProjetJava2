@@ -33,10 +33,7 @@ public class ShowProgrammerController {
 
 
             // Change le Pane visible
-            mainController.getMainAddProgrammeur().setVisible(false);
-            mainController.getMainListePane().setVisible(false);
-            mainController.getCurrentPane().setVisible(false);
-            mainController.getShowProgrammeur().setVisible(false);
+            mainController.visibleFalseAll();
             mainController.setCurrentPane(mainController.getShowProgrammeur());
             mainController.getShowProgrammeur().setVisible(true);
         } else {

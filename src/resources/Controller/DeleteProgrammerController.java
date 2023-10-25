@@ -22,10 +22,7 @@ public class DeleteProgrammerController {
         dataDB.deleteProgrammeurById(id);
 
         mainController.updatePrint();
-        mainController.getMainAddProgrammeur().setVisible(false);
-        mainController.getMainListePane().setVisible(false);
-        mainController.getCurrentPane().setVisible(false);
-        mainController.getShowProgrammeur().setVisible(false);
+        mainController.visibleFalseAll();
         mainController.getMainListePane().setVisible(true);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -528,7 +528,7 @@
                         </Label>
                         <Pane prefHeight="185.0" prefWidth="826.0">
                            <children>
-                              <Pane id="paneDashboardNumber" fx:id="paneDashboardNumber" layoutX="-1.0" layoutY="29.0" prefHeight="133.0" prefWidth="146.0" stylesheets="@../CSS/Table.css">
+                              <Pane id="paneDashboardNumber" fx:id="paneDashboardNumber" layoutX="-1.0" layoutY="29.0" prefHeight="133.0" prefWidth="135.0" stylesheets="@../CSS/Table.css">
                                  <children>
                                     <Label fx:id="labelNombreProgrammer" layoutX="13.0" layoutY="23.0" style="-fx-font-weight: bold;" text="27" textFill="WHITE">
                                        <font>
@@ -561,14 +561,14 @@
                                     </Label>
                                  </children>
                               </Pane>
-                              <Pane id="paneDashboardPrime" fx:id="paneDashboardPrime" layoutX="157.0" layoutY="28.0" prefHeight="133.0" prefWidth="164.0" stylesheets="@../CSS/Table.css">
+                              <Pane id="paneDashboardPrime" fx:id="paneDashboardPrime" layoutX="146.0" layoutY="28.0" prefHeight="133.0" prefWidth="179.0" stylesheets="@../CSS/Table.css">
                                  <children>
                                     <Label layoutX="17.0" layoutY="84.0" prefHeight="19.0" prefWidth="117.0" style="-fx-font-weight: bold;" text="prime moyenne" textFill="WHITE" wrapText="true">
                                        <font>
                                           <Font name="Century Gothic" size="15.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="labelPrimeMoyen" layoutX="4.0" layoutY="24.0" style="-fx-font-weight: bold;" text="127€" textFill="WHITE">
+                                    <Label fx:id="labelPrimeMoyen" layoutX="4.0" layoutY="24.0" style="-fx-font-weight: bold;" text="12755€" textFill="WHITE">
                                        <font>
                                           <Font name="Century Gothic" size="40.0" />
                                        </font>
@@ -608,6 +608,94 @@
                               </VBox>
                            </children>
                         </Pane>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+            <GridPane fx:id="settingsPane" visible="false">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox prefHeight="99.0" prefWidth="826.0">
+                           <children>
+                              <Label contentDisplay="BOTTOM" text="Actualiser la bdd :" underline="true">
+                                 <font>
+                                    <Font name="Century Gothic Bold Italic" size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="35.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="UpdateBddBtn" mnemonicParsing="false" onAction="#updateBdd" prefHeight="29.0" prefWidth="101.0" style="-fx-background-color: #3e7c59;" styleClass="settingsBtn" text="Actualiser" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="20.0" top="32.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Century Gothic Bold Italic" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="99.0" prefWidth="826.0">
+                           <children>
+                              <Label contentDisplay="BOTTOM" text="Rénitialiser la bdd :" underline="true">
+                                 <font>
+                                    <Font name="Century Gothic Bold Italic" size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="35.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="DeleteBddBtn" mnemonicParsing="false" onAction="#AllDeleteBdd" prefHeight="29.0" prefWidth="101.0" style="-fx-background-color: #3e7c59;" styleClass="settingsBtn" text="Réinitialiser" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="20.0" top="32.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Century Gothic Bold Italic" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="99.0" prefWidth="826.0">
+                           <children>
+                              <Label contentDisplay="BOTTOM" text="Ajouter autant de programmeurs que vous souhaitez :" underline="true">
+                                 <font>
+                                    <Font name="Century Gothic Bold Italic" size="17.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="35.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="valueAddProgSet" promptText="Ex : 200">
+                                 <HBox.margin>
+                                    <Insets left="20.0" top="32.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Button fx:id="AddNProgBtn" mnemonicParsing="false" onAction="#addNProgrammer" prefHeight="29.0" prefWidth="101.0" style="-fx-background-color: #3e7c59;" styleClass="settingsBtn" text="Ajouter" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="20.0" top="32.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Century Gothic Bold Italic" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>
