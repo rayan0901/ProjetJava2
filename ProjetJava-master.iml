@@ -30,5 +30,7 @@
     <orderEntry type="library" exported="" name="javafaker-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="snakeyaml-2.21" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3-3.0" level="project" />
+    <orderEntry type="library" exported="" name="javafx-sdk-21.0" level="project" />
+    <orderEntry type="library" exported="" name="lib" level="project" />
   </component>
 </module>

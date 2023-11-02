@@ -12,38 +12,43 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Contrôleur pour gérer la modification des informations des programmeurs.
+ * Il est responsable de la mise à jour des détails d'un programmeur dans la base de données
+ * et également de l'affichage des champs de saisie pour la modification.
+ */
 public class EditProgrammerController {
 
-    @FXML
-    private TextField fieldNameEdit;
-    @FXML
-    private TextField fieldFornameEdit;
-    @FXML
-    private TextField fieldPseudoEdit;
-    @FXML
-    private TextField FieldDateBornEdit;
-    @FXML
-    private TextField fieldSalaryEdit;
-    @FXML
-    private TextField fieldPrimeEdit;
+    @FXML private TextField fieldNameEdit;
+    @FXML private TextField fieldFornameEdit;
+    @FXML private TextField fieldPseudoEdit;
+    @FXML private TextField FieldDateBornEdit;
+    @FXML private TextField fieldSalaryEdit;
+    @FXML private TextField fieldPrimeEdit;
 
-    @FXML
-    private GridPane MainListePane;
+    @FXML private GridPane MainListePane;
+    @FXML private GridPane editProgrammeurPane;
 
-    @FXML
-    private GridPane editProgrammeurPane;
-
+    // Référence vers le contrôleur principal
     private MainController mainController;
 
     private GridPane CurrentPane;
 
     private int idCourant = -1;
+
+    /**
+     * Définit le contrôleur principal et initialise les champs.
+     * @param mainController Référence vers le MainController.
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
         this.idCourant = mainController.getIdCourant();
         this.CurrentPane = mainController.getCurrentPane();
     }
 
+    /**
+     * Met à jour les informations du MainController.
+     */
     public void updateMainController() {
         this.idCourant = mainController.getIdCourant();
         this.CurrentPane = mainController.getCurrentPane();
@@ -57,7 +62,8 @@ public class EditProgrammerController {
 
 
     /**
-     * Modifie les détails d'un programmeur dans la base de données.
+     * Modifie un programmeur existant dans la base de données.
+     * Lit les informations depuis les champs de texte et met à jour l'enregistrement correspondant.
      */
     @FXML
     public void modifierProgrammeur() {
@@ -120,7 +126,8 @@ public class EditProgrammerController {
     }
 
     /**
-     * Va à la page de modification pour un programmeur spécifié.
+     * Navigue vers la page de modification pour un programmeur spécifié.
+     * Charge les informations du programmeur dans les champs de texte pour modification.
      */
     @FXML
     public void goToModifierProgrammeur() {

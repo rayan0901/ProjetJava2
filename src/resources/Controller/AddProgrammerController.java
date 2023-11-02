@@ -10,15 +10,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Classe responsable de l'ajout de nouveaux programmeurs à la base de données.
+ */
 public class AddProgrammerController {
 
+    // Référence vers le contrôleur principal
     private MainController mainController;
+
+    /**
+     * Définit le contrôleur principal pour cette classe.
+     *
+     * @param mainController le contrôleur principal.
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
     /**
-     * Ajoute un nouveau programmeur à la base de données.
+     * Méthode FXML pour ajouter un nouveau programmeur à la base de données.
+     * Cette méthode est déclenchée lors de l'appui sur le bouton "Ajouter Programmeur" de l'interface utilisateur.
+     * Elle récupère les valeurs des champs, les valide, puis ajoute le nouveau programmeur.
+     * Un message d'information s'affiche à la fin pour confirmer l'ajout.
      */
     @FXML
     public void ajouterProgrammeur() {
@@ -51,8 +64,13 @@ public class AddProgrammerController {
             return;
         }
 
+        // Création de l'objet Programmeur
         Programmeur p = new Programmeur(prenom, nom, dateBorn, salaire, prime, pseudo);
+
+        // Appel à la méthode d'ajout de la classe ActionDB
         dataDB.ajouterProgrammeurWithOut(p);
+
+        // Mise à jour de l'affichage
         mainController.updatePrint();
 
         // Vider les champs

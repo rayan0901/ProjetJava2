@@ -26,245 +26,129 @@ import javafx.collections.transformation.FilteredList;
 import javafx.scene.shape.Circle;
 import javafx.event.EventHandler;
 
-
+/**
+ * Classe principale du contrôleur qui gère l'initialisation et la navigation entre les différents panneaux de l'interface.
+ * <p>
+ * Cette classe est responsable de l'initialisation des différents contrôleurs de panneau et fournit les méthodes nécessaires pour naviguer entre eux.
+ * </p>
+ */
 public class MainController implements Initializable {
-    @FXML
-    private Pane PaneStatus;
 
-    @FXML
-    private Button btnAccueil;
-
-    @FXML
-    private Button btnParamètres;
-
-    @FXML
-    private Button btnProgrammeurs;
-
-    @FXML
-    private Label labelStatus;
-
-    @FXML
-    private Label labelSalaireMoyen;
-
-    @FXML
-    private Label labelPrimeMoyen;
-
-    @FXML
-    private Label labelNombreProgrammer;
-
-    @FXML
-    private Label labelStatusMini;
-
-    @FXML
-    private Button btnAddProgammeurs;
-
-    @FXML
-    private Button btnEditProgammeurs;
-
-    @FXML
-    private Button returnListeBtn;
-
-    @FXML
-    private Button editBtnShow;
-
-    @FXML
-    private Button AddNProgBtn;
-
-    @FXML
-    private Button DeleteBddBtn;
-
-    @FXML
-    private Button UpdateBddBtn;
-
-    @FXML
-    private Button deleteButtonProgrammeursListe;
-
-    @FXML
-    private Button addButtonProgrammeursListe;
-
-    @FXML
-    private Button btnDeleteProgammeurs;
-
-    @FXML
-    private Button btnClose;
-
-    @FXML
-    private TableColumn<Programmeur, Date> createAt;
-
-    @FXML
-    private TableColumn<Programmeur, Date> CreateAtDash;
-
-    @FXML
-    private TableColumn<Programmeur, Date> DATE_DE_NAISSANCE;
-
-    @FXML
-    private TableColumn<Programmeur, String> NOM;
-
-    @FXML
-    private TableColumn<Programmeur, String> NOMDASH;
-
-    @FXML
-    private TableColumn<Programmeur, String> PRENOM;
-
-    @FXML
-    private TableColumn<Programmeur, String> PRENOMDASH;
-
-    @FXML
-    private TableColumn<Programmeur, Float> PRIME;
-
-    @FXML
-    private TableColumn<Programmeur, String> PSEUDO;
-
-    @FXML
-    private TableColumn<Programmeur, String> PSEUDODASH;
-
-    @FXML
-    private TableColumn<Programmeur, Float> SALAIRE;
-
-    @FXML
-    private TableColumn<Programmeur, Date> updateAt;
-
-    @FXML
-    private TableColumn<Programmeur, Integer> id;
-
-
-    @FXML
-    private TableView<Programmeur> tableProgrammeurs;
-
-    @FXML
-    private TableView<Programmeur> tableProgrammeursDashBoard;
-
-    private ObservableList<Programmeur> data;
-
-    @FXML
-    private TextField searchBar;
-
-    @FXML
-    private TextField valueAddProgSet;
-
-    @FXML
-    private ImageView avatarImageView;
-
-    @FXML
-    private GridPane MainAddProgrammeur;
-
-    @FXML
-    private GridPane ShowProgrammeur;
-
-    @FXML
-    private GridPane editProgrammeurPane;
-
-    @FXML
-    private GridPane MainListePane;
-
-    @FXML
-    private GridPane dashboardPane;
-
-    @FXML
-    private GridPane settingsPane;
-
-
-    /**ADD**/
-    @FXML
-    private TextField fieldName;
-    @FXML
-    private TextField fieldForname;
-    @FXML
-    private TextField fieldPseudo;
-    @FXML
-    private TextField FieldDateBorn;
-    @FXML
-    private TextField fieldSalary;
-    @FXML
-    private TextField fieldPrime;
-
-    /**Edit**/
-    @FXML
-    private TextField fieldNameEdit;
-    @FXML
-    private TextField fieldFornameEdit;
-    @FXML
-    private TextField fieldPseudoEdit;
-    @FXML
-    private TextField FieldDateBornEdit;
-    @FXML
-    private TextField fieldSalaryEdit;
-    @FXML
-    private TextField fieldPrimeEdit;
-
-    /**Show**/
-    @FXML
-    private TextField fieldNameShow;
-    @FXML
-    private TextField fieldFornameShow;
-    @FXML
-    private TextField fieldPseudoShow;
-    @FXML
-    private TextField FieldDateBornShow;
-    @FXML
-    private TextField fieldSalaryShow;
-    @FXML
-    private TextField fieldPrimeShow;
-
-    @FXML
-    private Button addProgrammeurBtnForm;
+    //Attention tous les éléments (variables) intéractifs de scene builder sont à la fin du fichier pour facilité la lecture
+    /**
+     * Liste filtrée des programmeurs. Cette liste est utilisée pour appliquer des filtres de recherche
+     * sur les données avant de les afficher dans la table.
+     */
     private FilteredList<Programmeur> filteredData;
+
+    /**
+     * Liste triée des programmeurs. Cette liste est une version triée de filteredData et est liée directement
+     * à l'affichage dans la table.
+     */
     private SortedList<Programmeur> sortedData;
 
-    private int idCourant = -1 ;
+    /**
+     * ID du programmeur actuellement sélectionné dans l'interface utilisateur.
+     * Initialisé à -1 pour indiquer qu'aucun programmeur n'est sélectionné au départ.
+     */
+    private int idCourant = -1;
 
+    /**
+     * Pane actuel dans l'interface utilisateur. Utilisé pour manipuler les éléments de l'interface
+     * associés au programmeur actuellement sélectionné.
+     */
     private GridPane CurrentPane;
 
+    /**
+     * Contrôleur pour gérer l'ajout de programmeurs.
+     */
     @FXML
     private AddProgrammerController addProgrammerController = new AddProgrammerController();
 
+    /**
+     * Contrôleur pour gérer l'édition de programmeurs.
+     */
     @FXML
     private EditProgrammerController editProgrammerController = new EditProgrammerController();
 
+    /**
+     * Contrôleur pour gérer l'affichage des détails d'un programmeur.
+     */
     @FXML
     private ShowProgrammerController showProgrammerController = new ShowProgrammerController();
+
+    /**
+     * Contrôleur pour gérer la barre de recherche.
+     */
     @FXML
     private SearchBarController searchBarController = new SearchBarController();
 
+    /**
+     * Contrôleur pour gérer la suppression de programmeurs.
+     */
     @FXML
     private DeleteProgrammerController deleteProgrammerController = new DeleteProgrammerController();
 
+    /**
+     * Contrôleur pour gérer les clics sur l'interface.
+     */
     @FXML
     private HandleClicksController handleClicksController = new HandleClicksController();
 
+    /**
+     * Contrôleur pour gérer les paramètres de l'application.
+     */
     @FXML
     private SettingsController settingsController = new SettingsController();
 
 
+
     /**
-     * Initialise l'interface utilisateur et prépare les composants nécessaires.
-     * @param location URL
-     * @param resources Ressources
+     * Initialise l'interface utilisateur et prépare les composants nécessaires pour l'affichage et l'interaction.
+     * Cette méthode est appelée automatiquement lors du lancement de l'application.
+     * <p>
+     * Elle réalise plusieurs tâches:
+     * <ul>
+     *   <li>Établir une connexion à la base de données via {@code ActionDB}.</li>
+     *   <li>Initialiser les labels statistiques de l'application (nombre de programmeurs, prime moyenne, etc.).</li>
+     *   <li>Configurer l'avatar avec une forme circulaire.</li>
+     *   <li>Initialiser les colonnes des tableaux et les lier aux propriétés des objets {@code Programmeur}.</li>
+     *   <li>Configurer les données triées et filtrées pour les tableaux.</li>
+     *   <li>Initialiser la barre de recherche.</li>
+     *   <li>Configurer les contrôleurs pour diverses actions (ajout, modification, affichage et suppression de programmeurs).</li>
+     * </ul>
+     * </p>
+     *
+     * @param location   URL du fichier FXML qui a été chargé.
+     * @param resources  Le bundle de ressources qui a été donné au FXMLLoader.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Établir la connexion à la base de données
         ActionDB DataBdd;
         DataBdd = new ActionDB();
         DataBdd.getConnexion();
-        //DataBdd.fillBdd(200);
+
+        // Masquer tous les panneaux et rendre visible le panneau de tableau de bord
         visibleFalseAll();
         dashboardPane.setVisible(true);
 
+        // Initialiser les statistiques affichées sur le tableau de bord
         labelNombreProgrammer.setText(DataBdd.getNumberOfProgrammerString());
         labelPrimeMoyen.setText(DataBdd.getPrimeMoyenneString() + "€");
         labelSalaireMoyen.setText(DataBdd.getSalaireMoyenString() + "€");
 
+        // Configurer l'avatar de mon compte pour être un cercle
         Circle clipCircle;
         clipCircle = new Circle();
         clipCircle.setCenterX(avatarImageView.getFitWidth() / 2);
         clipCircle.setCenterY(avatarImageView.getFitHeight() / 2);
         clipCircle.setRadius(avatarImageView.getFitWidth() / 2);
-
         avatarImageView.setClip(clipCircle);
 
+        // Initialiser les colonnes de la table des programmeurs pour correspond à la bdd
         createAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         updateAt.setCellValueFactory(new PropertyValueFactory<>("updateAt"));
-
         DATE_DE_NAISSANCE.setCellValueFactory(new PropertyValueFactory<>("date"));
         NOM.setCellValueFactory(new PropertyValueFactory<>("nom"));
         PRENOM.setCellValueFactory(new PropertyValueFactory<>("prenom"));
@@ -273,6 +157,7 @@ public class MainController implements Initializable {
         SALAIRE.setCellValueFactory(new PropertyValueFactory<>("salaire"));
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
 
+        // Remplir la table de pane avec des données et configurer la recherche et le tri
         data = FXCollections.observableArrayList(DataBdd.recupProgrammeurs());
         filteredData = new FilteredList<>(data, p -> true);
         searchBarController.setMainController(this);
@@ -284,12 +169,15 @@ public class MainController implements Initializable {
         tableProgrammeurs.setItems(sortedData);
 
 
+        // Initialiser la table du tableau de bord
         NOMDASH.setCellValueFactory(new PropertyValueFactory<>("nom"));
         PRENOMDASH.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         PSEUDODASH.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
         CreateAtDash.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         tableProgrammeursDashBoard.setItems(FXCollections.observableArrayList(DataBdd.getDerniersProgrammeurs()));
 
+
+        // Configurer l'écouteur pour double-clic sur une ligne de la table
         tableProgrammeurs.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -303,6 +191,8 @@ public class MainController implements Initializable {
                 }
             }
         });
+
+        // Définir ce contrôleur comme contrôleur principal pour d'autres contrôleurs. Pareille pour les autres
         addProgrammerController.setMainController(this);
         editProgrammerController.setMainController(this);
         showProgrammerController.setMainController(this);
@@ -312,7 +202,9 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Met à jour la liste des programmeurs affichés.
+     * Met à jour la liste des programmeurs affichés dans le tableau.
+     * Récupère les données les plus récentes de la base de données
+     * et actualise la vue.
      */
     public void updatePrint() {
         ActionDB dataDB = new ActionDB();
@@ -329,6 +221,9 @@ public class MainController implements Initializable {
         tableProgrammeurs.setItems(sortedData);
     }
 
+    /**
+     * Rend tous les panneaux principaux invisibles.
+     */
     public void visibleFalseAll() {
         getMainAddProgrammeur().setVisible(false);
         getMainListePane().setVisible(false);
@@ -342,54 +237,88 @@ public class MainController implements Initializable {
 
     /*****************************************************************************************************************************************************************************************/
     /*****************************************************************************************************************************************************************************************/
-    /******************************************************REDIRECTION**********************************************************/
+    /******************************************************REDIRECTION************************************************************************************************************************/
     /*****************************************************************************************************************************************************************************************/
     /*****************************************************************************************************************************************************************************************/
 
+    /**
+     * Redirige l'action d'ajout de programmeur vers le contrôleur AddProgrammerController.
+     */
     public void ajouterProgrammeur() {
         addProgrammerController.ajouterProgrammeur();
     }
 
+    /**
+     * Redirige l'action de filtrage de données vers le contrôleur SearchBarController.
+     * @param terme Le terme à utiliser pour le filtrage.
+     */
     public void filtrerData(String terme) {
         searchBarController.filtrerData(terme);
     }
 
+    /**
+     * Redirige l'action de modification de programmeur vers le contrôleur EditProgrammerController.
+     */
     public void modifierProgrammeur() {
         editProgrammerController.modifierProgrammeur();
     }
 
+    /**
+     * Redirige vers la page de modification de programmeur via le contrôleur EditProgrammerController.
+     */
     public void goToModifierProgrammeur() {
         editProgrammerController.goToModifierProgrammeur();
     }
 
+    /**
+     * Redirige l'action d'affichage d'un programmeur spécifique vers le contrôleur ShowProgrammerController.
+     * @param id L'identifiant du programmeur à afficher.
+     */
     public void showProgrammeur(int id) {
         showProgrammerController.showProgrammeur(id);
     }
 
+    /**
+     * Redirige l'action de suppression de programmeur vers le contrôleur DeleteProgrammerController.
+     */
     @FXML
     public void supprimerProgrammeur() {
         deleteProgrammerController.supprimerProgrammeur(idCourant);
     }
 
+    /**
+     * Redirige les actions de clic sur l'interface vers le contrôleur HandleClicksController.
+     * @param event L'événement de clic déclenché.
+     */
     @FXML
     public void handleClicks(ActionEvent event) {
         handleClicksController.handleClicks(event);
     }
 
+    /**
+     * Redirige l'action de mise à jour de la base de données vers le contrôleur SettingsController.
+     */
     @FXML
     public void updateBdd() {
         settingsController.updateBdd();
     }
 
+    /**
+     * Redirige l'action de suppression de toutes les données de la base de données vers le contrôleur SettingsController.
+     */
     @FXML
     public void AllDeleteBdd() {
         settingsController.AllDeleteBdd();
     }
 
+    /**
+     * Redirige l'action d'ajout de N programmeurs vers le contrôleur SettingsController.
+     */
     @FXML
     public void addNProgrammer() {
         settingsController.addNProgrammer(valueAddProgSet.getText());
     }
+
 
     /*****************************************************************************************************************************************************************************************/
     /*****************************************************************************************************************************************************************************************/
@@ -877,4 +806,97 @@ public class MainController implements Initializable {
     public void setDashboardPane(GridPane dashboardPane) {
         this.dashboardPane = dashboardPane;
     }
+
+    /**************************************************************************************************************************/
+    /**************************************************************************************************************************/
+    /********************************************ELEMENT INTERACTIF SCENE BUILDER**********************************************/
+    /**************************************************************************************************************************/
+    /**************************************************************************************************************************/
+    /**************************************************************************************************************************/
+
+    // Variables liées à l'interface graphique
+    @FXML private Pane PaneStatus;
+    @FXML private Button btnAccueil;
+    @FXML private Button btnParamètres;
+    @FXML private Button btnProgrammeurs;
+    @FXML private Label labelStatus;
+    @FXML private Label labelSalaireMoyen;
+    @FXML private Label labelPrimeMoyen;
+    @FXML private Label labelNombreProgrammer;
+    @FXML private Label labelStatusMini;
+    @FXML private Button btnAddProgammeurs;
+    @FXML private Button btnEditProgammeurs;
+    @FXML private Button returnListeBtn;
+    @FXML private Button editBtnShow;
+    @FXML private Button AddNProgBtn;
+    @FXML private Button DeleteBddBtn;
+    @FXML private Button UpdateBddBtn;
+    @FXML private Button deleteButtonProgrammeursListe;
+    @FXML private Button addButtonProgrammeursListe;
+    @FXML private Button btnDeleteProgammeurs;
+    @FXML private Button btnClose;
+
+    // Colonnes de la table des programmeurs
+    @FXML private TableColumn<Programmeur, Date> createAt;
+    @FXML private TableColumn<Programmeur, Date> CreateAtDash;
+    @FXML private TableColumn<Programmeur, Date> DATE_DE_NAISSANCE;
+    @FXML private TableColumn<Programmeur, String> NOM;
+    @FXML private TableColumn<Programmeur, String> NOMDASH;
+    @FXML private TableColumn<Programmeur, String> PRENOM;
+    @FXML private TableColumn<Programmeur, String> PRENOMDASH;
+    @FXML private TableColumn<Programmeur, Float> PRIME;
+    @FXML private TableColumn<Programmeur, String> PSEUDO;
+    @FXML private TableColumn<Programmeur, String> PSEUDODASH;
+    @FXML private TableColumn<Programmeur, Float> SALAIRE;
+    @FXML private TableColumn<Programmeur, Date> updateAt;
+    @FXML private TableColumn<Programmeur, Integer> id;
+
+    // Tables des programmeurs
+    @FXML private TableView<Programmeur> tableProgrammeurs;
+    @FXML private TableView<Programmeur> tableProgrammeursDashBoard;
+
+    // Données observables
+    private ObservableList<Programmeur> data;
+
+    // Barre de recherche
+    @FXML private TextField searchBar;
+    @FXML private TextField valueAddProgSet;
+    @FXML private ImageView avatarImageView;
+
+    // Panneaux de l'interface
+    @FXML private GridPane MainAddProgrammeur;
+    @FXML private GridPane ShowProgrammeur;
+    @FXML private GridPane editProgrammeurPane;
+    @FXML private GridPane MainListePane;
+    @FXML private GridPane dashboardPane;
+    @FXML private GridPane settingsPane;
+
+// Blocs d'ajout de programmeur
+    /**ADD**/
+    @FXML private TextField fieldName;
+    @FXML private TextField fieldForname;
+    @FXML private TextField fieldPseudo;
+    @FXML private TextField FieldDateBorn;
+    @FXML private TextField fieldSalary;
+    @FXML private TextField fieldPrime;
+
+// Blocs d'édition de programmeur
+    /**Edit**/
+    @FXML private TextField fieldNameEdit;
+    @FXML private TextField fieldFornameEdit;
+    @FXML private TextField fieldPseudoEdit;
+    @FXML private TextField FieldDateBornEdit;
+    @FXML private TextField fieldSalaryEdit;
+    @FXML private TextField fieldPrimeEdit;
+
+// Blocs d'affichage de programmeur
+    /**Show**/
+    @FXML private TextField fieldNameShow;
+    @FXML private TextField fieldFornameShow;
+    @FXML private TextField fieldPseudoShow;
+    @FXML private TextField FieldDateBornShow;
+    @FXML private TextField fieldSalaryShow;
+    @FXML private TextField fieldPrimeShow;
+    @FXML private Button addProgrammeurBtnForm;
+
 }

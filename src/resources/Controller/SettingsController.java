@@ -6,13 +6,27 @@ import javafx.scene.control.Alert;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Classe responsable de la gestion des paramètres et des opérations sur la base de données.
+ */
 public class SettingsController {
 
+    // Référence vers le contrôleur principal
     private MainController mainController;
+
+    /**
+     * Définit le contrôleur principal pour cette classe.
+     *
+     * @param mainController le contrôleur principal.
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Met à jour les informations affichées à partir de la base de données.
+     * Cette méthode rafraîchit également les informations sur l'interface utilisateur.
+     */
     public void updateBdd(){
         ActionDB DataBdd;
         DataBdd = new ActionDB();
@@ -30,6 +44,11 @@ public class SettingsController {
         alert.showAndWait();
     }
 
+    /**
+     * Surcharge de la méthode {@code updateBdd}, avec un paramètre pour gérer l'affichage.
+     *
+     * @param print indicateur pour savoir si l'opération doit être imprimée.
+     */
     public void updateBdd(boolean print){
         ActionDB DataBdd;
         DataBdd = new ActionDB();
@@ -41,6 +60,10 @@ public class SettingsController {
         mainController.getLabelSalaireMoyen().setText(DataBdd.getSalaireMoyenString() + "€");
     }
 
+    /**
+     * Supprime tous les programmeurs de la base de données.
+     * Une boîte de dialogue d'information ou d'erreur apparaît pour indiquer le résultat de l'opération.
+     */
     public void AllDeleteBdd() {
         ActionDB DataBdd;
         DataBdd = new ActionDB();
@@ -75,6 +98,12 @@ public class SettingsController {
         this.updateBdd(false);
     }
 
+    /**
+     * Ajoute un certain nombre de programmeurs à la base de données.
+     * Une boîte de dialogue d'information ou d'erreur apparaît pour indiquer le résultat de l'opération.
+     *
+     * @param n le nombre de programmeurs à ajouter.
+     */
     public void addNProgrammer(String n)
     {
         ActionDB DataBdd;
