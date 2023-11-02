@@ -16,9 +16,9 @@ public class ActionDB {
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
-    private String url = "jdbc:mysql://localhost:3306/bdtpjava";
+    private String url = "jdbc:mysql://localhost:3306/bdprojetjava";
     private String user = "root";
-    private String password = "sqlHello!6894210";
+    private String password = "user";
 
     /**
      * Établit une connexion à la base de données et renvoie un objet Statement pour exécuter des requêtes SQL.

@@ -537,6 +537,14 @@ public class MainController implements Initializable {
         return addButtonProgrammeursListe;
     }
 
+    public TableView<Programmeur> getTableProgrammeursDashBoard() {
+        return tableProgrammeursDashBoard;
+    }
+
+    public void setTableProgrammeursDashBoard(TableView<Programmeur> tableProgrammeursDashBoard) {
+        this.tableProgrammeursDashBoard = tableProgrammeursDashBoard;
+    }
+
     public void setAddButtonProgrammeursListe(Button addButtonProgrammeursListe) {
         this.addButtonProgrammeursListe = addButtonProgrammeursListe;
     }

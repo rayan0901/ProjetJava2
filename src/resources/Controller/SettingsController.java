@@ -1,6 +1,7 @@
 package resources.Controller;
 
 import Projet.ActionDB;
+import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 
 import java.sql.SQLException;
@@ -50,6 +51,7 @@ public class SettingsController {
         mainController.getLabelNombreProgrammer().setText(mainController.getBdd().getNumberOfProgrammerString());
         mainController.getLabelPrimeMoyen().setText(mainController.getBdd().getPrimeMoyenneString() + "€");
         mainController.getLabelSalaireMoyen().setText(mainController.getBdd().getSalaireMoyenString() + "€");
+        mainController.getTableProgrammeursDashBoard().setItems(FXCollections.observableArrayList(mainController.getBdd().getDerniersProgrammeurs()));
     }
 
     /**
