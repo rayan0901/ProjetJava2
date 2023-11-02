@@ -184,6 +184,18 @@ public class ActionDB {
     }
 
 
+    /**
+     * Remplit la base de données avec un nombre spécifié de programmeurs générés aléatoirement.
+     *
+     * @param n Le nombre de programmeurs à ajouter à la base de données.
+     *
+     * <p>
+     * Après la génération des données, une requête SQL d'insertion est construite et exécutée pour insérer le programmeur dans la base de données.
+     * Si l'insertion est réussie, un message de confirmation est affiché. En cas d'erreur lors de l'exécution de la requête, un message d'erreur est affiché.
+     * </p>
+     *
+     * @throws SQLException Si une erreur survient lors de l'exécution de la requête SQL.
+     */
     public void fillBdd(int n) {
         Statement statement = getConnexion();
 
@@ -224,6 +236,17 @@ public class ActionDB {
         }
     }
 
+    /**
+     * Ajoute un programmeur spécifié à la base de données.
+     *
+     * @param p Le programmeur à ajouter à la base de données.
+     *
+     * <p>
+     * Après la construction de la requête, elle est exécutée et, si l'insertion est réussie, un message de confirmation est affiché. En cas d'erreur lors de l'exécution de la requête, un message d'erreur est affiché.
+     * </p>
+     *
+     * @throws SQLException Si une erreur survient lors de l'exécution de la requête SQL.
+     */
     public void ajouterProgrammeurWithOut(Programmeur p) {
         Statement statement = getConnexion();
 
@@ -250,6 +273,14 @@ public class ActionDB {
         }
     }
 
+    /**
+     * Récupère un programmeur de la base de données en fonction de son identifiant.
+     *
+     * @param id L'identifiant du programmeur à récupérer.
+     * @return Un objet Programmeur correspondant à l'identifiant donné ou null si aucun programmeur avec cet identifiant n'est trouvé.
+     *
+     * @throws SQLException Si une erreur survient lors de l'exécution de la requête SQL.
+     */
     public Programmeur getProgrammeurById(int id) {
         Programmeur programmeur = null;
         try {
@@ -265,6 +296,18 @@ public class ActionDB {
         return programmeur;
     }
 
+    /**
+     * Met à jour les données d'un programmeur spécifié par son identifiant.
+     *
+     * @param id L'identifiant du programmeur à mettre à jour.
+     * @param nom Le nouveau nom du programmeur.
+     * @param prenom Le nouveau prénom du programmeur.
+     * @param dateNaissance La nouvelle date de naissance du programmeur.
+     * @param salaire Le nouveau salaire du programmeur.
+     * @param prime La nouvelle prime du programmeur.
+     *
+     * @throws SQLException Si une erreur survient lors de l'exécution de la requête SQL.
+     */
     public void updateProgrammeurById(int id, String nom, String prenom, Date dateNaissance, float salaire, float prime) {
         Statement statement = getConnexion();
 
@@ -285,6 +328,13 @@ public class ActionDB {
         }
     }
 
+    /**
+     * Calcule le nombre total de programmeurs dans la base de données.
+     *
+     * @return Le nombre total de programmeurs.
+     *
+     * <b>Remarque</b> : En cas d'erreur SQL, un message d'erreur est affiché et la fonction renvoie 0.
+     */
     public int getNumberOfProgrammer()
     {
         Statement statement;
@@ -309,6 +359,11 @@ public class ActionDB {
         return count;
     }
 
+    /**
+     * Calcule et renvoie le nombre total de programmeurs dans la base de données sous forme de chaîne.
+     *
+     * @return Le nombre total de programmeurs sous forme de chaîne.
+     */
     public String getNumberOfProgrammerString()
     {
         int count;
@@ -320,6 +375,13 @@ public class ActionDB {
         return countStr;
     }
 
+    /**
+     * Calcule le salaire moyen des programmeurs dans la base de données.
+     *
+     * @return Le salaire moyen des programmeurs.
+     *
+     * <b>Remarque</b> : En cas d'erreur SQL, un message d'erreur est affiché et la fonction renvoie 0.
+     */
     public float getSalaireMoyen()
     {
         Statement statement;
@@ -343,13 +405,24 @@ public class ActionDB {
         return salaireMoyen;
     }
 
+    /**
+     * Calcule et renvoie le salaire moyen des programmeurs dans la base de données sous forme de chaîne, formaté à deux décimales.
+     *
+     * @return Le salaire moyen des programmeurs sous forme de chaîne.
+     */
     public String getSalaireMoyenString()
     {
         return String.format("%.2f", getSalaireMoyen());
     }
 
 
-
+    /**
+     * Calcule la prime moyenne des programmeurs dans la base de données.
+     *
+     * @return La prime moyenne des programmeurs.
+     *
+     * <b>Remarque</b> : En cas d'erreur SQL, un message d'erreur est affiché et la fonction renvoie 0.
+     */
     public float getPrimeMoyenne()
     {
         Statement statement;
@@ -373,12 +446,24 @@ public class ActionDB {
         return primeMoyenne;
     }
 
+    /**
+     * Calcule et renvoie la prime moyenne des programmeurs dans la base de données sous forme de chaîne, formaté à deux décimales.
+     *
+     * @return La prime moyenne des programmeurs sous forme de chaîne.
+     */
     public String getPrimeMoyenneString()
     {
         return String.format("%.2f", getPrimeMoyenne());
     }
 
 
+    /**
+     * Récupère les 10 derniers programmeurs ajoutés à la base de données, basé sur la date de création.
+     *
+     * @return Une liste des 10 derniers programmeurs ajoutés.
+     *
+     * <b>Remarque</b> : En cas d'erreur SQL, un message d'erreur est affiché et la fonction renvoie une liste vide.
+     */
     public ArrayList<Programmeur> getDerniersProgrammeurs()
     {
         ArrayList<Programmeur> derniersProgrammeurs = new ArrayList<>();
