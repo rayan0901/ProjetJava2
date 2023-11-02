@@ -32,13 +32,9 @@ public class DeleteProgrammerController {
      */
     @FXML
     public void supprimerProgrammeur(int id) {
-        ActionDB dataDB = new ActionDB();
-
-        // Établit une connexion à la base de données.
-        dataDB.getConnexion();
 
         // Supprime le programmeur par son identifiant.
-        dataDB.deleteProgrammeurById(id);
+        mainController.getBdd().deleteProgrammeurById(id);
 
         // Met à jour l'interface utilisateur.
         mainController.updatePrint();

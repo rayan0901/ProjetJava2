@@ -20,6 +20,7 @@ public class HandleClicksController {
     public void handleClicks(ActionEvent event) {
 
         if (event.getSource() == mainController.getBtnAccueil()) {
+            mainController.updateBdd(false);
             mainController.visibleFalseAll();
             mainController.getDashboardPane().setVisible(true);
             mainController.getLabelStatus().setText("/Dashboard");

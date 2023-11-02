@@ -19,9 +19,7 @@ public class ShowProgrammerController {
      * @param id L'identifiant du programmeur
      */
     public void showProgrammeur(int id) {
-        ActionDB dataDB = new ActionDB();
-        dataDB.getConnexion();
-        Programmeur p = dataDB.getProgrammeurById(id);
+        Programmeur p = mainController.getBdd().getProgrammeurById(id);
 
         if (p != null) {
             mainController.getFieldFornameShow().setText(p.getPrenom());

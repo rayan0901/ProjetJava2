@@ -53,6 +53,189 @@ public class MainController implements Initializable {
      */
     private GridPane CurrentPane;
 
+    private ActionDB bdd = new ActionDB();
+
+
+    /**
+     * Initialise l'interface utilisateur et prépare les composants nécessaires pour l'affichage et l'interaction.
+     * Cette méthode est appelée automatiquement lors du lancement de l'application.
+     * <p>
+     * Elle réalise plusieurs tâches:
+     * <ul>
+     *   <li>Établir une connexion à la base de données via {@code ActionDB}.</li>
+     *   <li>Initialiser les labels statistiques de l'application (nombre de programmeurs, prime moyenne, etc.).</li>
+     *   <li>Configurer l'avatar avec une forme circulaire.</li>
+     *   <li>Initialiser les colonnes des tableaux et les lier aux propriétés des objets {@code Programmeur}.</li>
+     *   <li>Configurer les données triées et filtrées pour les tableaux.</li>
+     *   <li>Initialiser la barre de recherche.</li>
+     *   <li>Configurer les contrôleurs pour diverses actions (ajout, modification, affichage et suppression de programmeurs).</li>
+     * </ul>
+     * </p>
+     *
+     * @param location   URL du fichier FXML qui a été chargé.
+     * @param resources  Le bundle de ressources qui a été donné au FXMLLoader.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Établir la connexion à la base de données
+        bdd.getConnexion();
+
+        setDashboard();
+
+        setDesignAvatarUser();
+
+        setAllColForTabMain();
+
+        fillTabAndFIlter();
+
+        setTabDashboard();
+
+        setCanClickOnTab();
+
+        setAllController();
+    }
+
+    /**
+     * Met à jour la liste des programmeurs affichés dans le tableau.
+     * Récupère les données les plus récentes de la base de données
+     * et actualise la vue.
+     */
+    public void updatePrint() {
+        data.clear();  // Supprime les anciennes données
+        data.addAll(bdd.recupProgrammeurs());  // Ajoute les nouvelles données
+
+        // Tri et filtre les données à nouveau si nécessaire
+        sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(tableProgrammeurs.comparatorProperty());
+
+        // Met à jour le tableau
+        tableProgrammeurs.setItems(sortedData);
+    }
+
+    /**
+     * Rend tous les panneaux principaux invisibles.
+     */
+    public void visibleFalseAll() {
+        getMainAddProgrammeur().setVisible(false);
+        getMainListePane().setVisible(false);
+        getEditProgrammeurPane().setVisible(false);
+        getShowProgrammeur().setVisible(false);
+        getDashboardPane().setVisible(false);
+        getSettingsPane().setVisible(false);
+
+    }
+
+    /**
+     * Initialise et associe ce contrôleur comme contrôleur principal pour tous les autres contrôleurs.
+     */
+    public void setAllController() {
+        // Définir ce contrôleur comme contrôleur principal pour d'autres contrôleurs. Pareille pour les autres
+        addProgrammerController.setMainController(this);
+        editProgrammerController.setMainController(this);
+        showProgrammerController.setMainController(this);
+        deleteProgrammerController.setMainController(this);
+        handleClicksController.setMainController(this);
+        settingsController.setMainController(this);
+    }
+
+    /**
+     * Initialise les colonnes de la table des programmeurs pour correspondre à la base de données.
+     */
+    public void setAllColForTabMain() {
+        // Initialiser les colonnes de la table des programmeurs pour correspond à la bdd
+        createAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        updateAt.setCellValueFactory(new PropertyValueFactory<>("updateAt"));
+        DATE_DE_NAISSANCE.setCellValueFactory(new PropertyValueFactory<>("date"));
+        NOM.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        PRENOM.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+        PRIME.setCellValueFactory(new PropertyValueFactory<>("prime"));
+        PSEUDO.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
+        SALAIRE.setCellValueFactory(new PropertyValueFactory<>("salaire"));
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+    }
+
+    /**
+     * Remplit la table avec les données, configure la recherche et le tri.
+     */
+    public void fillTabAndFIlter() {
+        // Remplir la table de pane avec des données et configurer la recherche et le tri
+        data = FXCollections.observableArrayList(bdd.recupProgrammeurs());
+        filteredData = new FilteredList<>(data, p -> true);
+        searchBarController.setMainController(this);
+        sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(tableProgrammeurs.comparatorProperty());
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            filtrerData(newValue);
+        });
+        tableProgrammeurs.setItems(sortedData);
+    }
+
+    /**
+     * Configure l'avatar de l'utilisateur pour avoir une forme circulaire.
+     */
+    public void setDesignAvatarUser() {
+        // Configurer l'avatar de mon compte pour être un cercle
+        Circle clipCircle;
+        clipCircle = new Circle();
+        clipCircle.setCenterX(avatarImageView.getFitWidth() / 2);
+        clipCircle.setCenterY(avatarImageView.getFitHeight() / 2);
+        clipCircle.setRadius(avatarImageView.getFitWidth() / 2);
+        avatarImageView.setClip(clipCircle);
+    }
+
+    /**
+     * Initialise la table du tableau de bord.
+     */
+    public void setTabDashboard() {
+        // Initialiser la table du tableau de bord
+        NOMDASH.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        PRENOMDASH.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+        PSEUDODASH.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
+        CreateAtDash.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        tableProgrammeursDashBoard.setItems(FXCollections.observableArrayList(bdd.getDerniersProgrammeurs()));
+    }
+
+    /**
+     * Initialise le tableau de bord, cache tous les autres panneaux et affiche le panneau du tableau de bord.
+     */
+    public void setDashboard() {
+        // Masquer tous les panneaux et rendre visible le panneau de tableau de bord
+        visibleFalseAll();
+        dashboardPane.setVisible(true);
+
+        // Initialiser les statistiques affichées sur le tableau de bord
+        labelNombreProgrammer.setText(bdd.getNumberOfProgrammerString());
+        labelPrimeMoyen.setText(bdd.getPrimeMoyenneString() + "€");
+        labelSalaireMoyen.setText(bdd.getSalaireMoyenString() + "€");
+    }
+
+    /**
+     * Ajoute un écouteur à la table des programmeurs pour gérer le double-clic sur une ligne.
+     */
+    public void setCanClickOnTab() {
+        // Configurer l'écouteur pour double-clic sur une ligne de la table
+        tableProgrammeurs.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Programmeur selectedProgrammeur = tableProgrammeurs.getSelectionModel().getSelectedItem();
+                    if (selectedProgrammeur != null) {
+                        int selectedId = selectedProgrammeur.getId();
+                        idCourant = selectedId;
+                        showProgrammeur(selectedId);
+                    }
+                }
+            }
+        });
+    }
+
+
+    /*****************************************************************************************************************************************************************************************/
+    /*****************************************************************************************************************************************************************************************/
+    /******************************************************REDIRECTION************************************************************************************************************************/
+    /*****************************************************************************************************************************************************************************************/
+    /*****************************************************************************************************************************************************************************************/
+
     /**
      * Contrôleur pour gérer l'ajout de programmeurs.
      */
@@ -95,145 +278,6 @@ public class MainController implements Initializable {
     @FXML
     private SettingsController settingsController = new SettingsController();
 
-
-
-    /**
-     * Initialise l'interface utilisateur et prépare les composants nécessaires pour l'affichage et l'interaction.
-     * Cette méthode est appelée automatiquement lors du lancement de l'application.
-     * <p>
-     * Elle réalise plusieurs tâches:
-     * <ul>
-     *   <li>Établir une connexion à la base de données via {@code ActionDB}.</li>
-     *   <li>Initialiser les labels statistiques de l'application (nombre de programmeurs, prime moyenne, etc.).</li>
-     *   <li>Configurer l'avatar avec une forme circulaire.</li>
-     *   <li>Initialiser les colonnes des tableaux et les lier aux propriétés des objets {@code Programmeur}.</li>
-     *   <li>Configurer les données triées et filtrées pour les tableaux.</li>
-     *   <li>Initialiser la barre de recherche.</li>
-     *   <li>Configurer les contrôleurs pour diverses actions (ajout, modification, affichage et suppression de programmeurs).</li>
-     * </ul>
-     * </p>
-     *
-     * @param location   URL du fichier FXML qui a été chargé.
-     * @param resources  Le bundle de ressources qui a été donné au FXMLLoader.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // Établir la connexion à la base de données
-        ActionDB DataBdd;
-        DataBdd = new ActionDB();
-        DataBdd.getConnexion();
-
-        // Masquer tous les panneaux et rendre visible le panneau de tableau de bord
-        visibleFalseAll();
-        dashboardPane.setVisible(true);
-
-        // Initialiser les statistiques affichées sur le tableau de bord
-        labelNombreProgrammer.setText(DataBdd.getNumberOfProgrammerString());
-        labelPrimeMoyen.setText(DataBdd.getPrimeMoyenneString() + "€");
-        labelSalaireMoyen.setText(DataBdd.getSalaireMoyenString() + "€");
-
-        // Configurer l'avatar de mon compte pour être un cercle
-        Circle clipCircle;
-        clipCircle = new Circle();
-        clipCircle.setCenterX(avatarImageView.getFitWidth() / 2);
-        clipCircle.setCenterY(avatarImageView.getFitHeight() / 2);
-        clipCircle.setRadius(avatarImageView.getFitWidth() / 2);
-        avatarImageView.setClip(clipCircle);
-
-        // Initialiser les colonnes de la table des programmeurs pour correspond à la bdd
-        createAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
-        updateAt.setCellValueFactory(new PropertyValueFactory<>("updateAt"));
-        DATE_DE_NAISSANCE.setCellValueFactory(new PropertyValueFactory<>("date"));
-        NOM.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        PRENOM.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-        PRIME.setCellValueFactory(new PropertyValueFactory<>("prime"));
-        PSEUDO.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
-        SALAIRE.setCellValueFactory(new PropertyValueFactory<>("salaire"));
-        id.setCellValueFactory(new PropertyValueFactory<>("id"));
-
-        // Remplir la table de pane avec des données et configurer la recherche et le tri
-        data = FXCollections.observableArrayList(DataBdd.recupProgrammeurs());
-        filteredData = new FilteredList<>(data, p -> true);
-        searchBarController.setMainController(this);
-        sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tableProgrammeurs.comparatorProperty());
-        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            filtrerData(newValue);
-        });
-        tableProgrammeurs.setItems(sortedData);
-
-
-        // Initialiser la table du tableau de bord
-        NOMDASH.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        PRENOMDASH.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-        PSEUDODASH.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
-        CreateAtDash.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
-        tableProgrammeursDashBoard.setItems(FXCollections.observableArrayList(DataBdd.getDerniersProgrammeurs()));
-
-
-        // Configurer l'écouteur pour double-clic sur une ligne de la table
-        tableProgrammeurs.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    Programmeur selectedProgrammeur = tableProgrammeurs.getSelectionModel().getSelectedItem();
-                    if (selectedProgrammeur != null) {
-                        int selectedId = selectedProgrammeur.getId();
-                        idCourant = selectedId;
-                        showProgrammeur(selectedId);
-                    }
-                }
-            }
-        });
-
-        // Définir ce contrôleur comme contrôleur principal pour d'autres contrôleurs. Pareille pour les autres
-        addProgrammerController.setMainController(this);
-        editProgrammerController.setMainController(this);
-        showProgrammerController.setMainController(this);
-        deleteProgrammerController.setMainController(this);
-        handleClicksController.setMainController(this);
-        settingsController.setMainController(this);
-    }
-
-    /**
-     * Met à jour la liste des programmeurs affichés dans le tableau.
-     * Récupère les données les plus récentes de la base de données
-     * et actualise la vue.
-     */
-    public void updatePrint() {
-        ActionDB dataDB = new ActionDB();
-
-        dataDB.getConnexion();
-        data.clear();  // Supprime les anciennes données
-        data.addAll(dataDB.recupProgrammeurs());  // Ajoute les nouvelles données
-
-        // Tri et filtre les données à nouveau si nécessaire
-        sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tableProgrammeurs.comparatorProperty());
-
-        // Met à jour le tableau
-        tableProgrammeurs.setItems(sortedData);
-    }
-
-    /**
-     * Rend tous les panneaux principaux invisibles.
-     */
-    public void visibleFalseAll() {
-        getMainAddProgrammeur().setVisible(false);
-        getMainListePane().setVisible(false);
-        getEditProgrammeurPane().setVisible(false);
-        getShowProgrammeur().setVisible(false);
-        getDashboardPane().setVisible(false);
-        getSettingsPane().setVisible(false);
-
-    }
-
-
-    /*****************************************************************************************************************************************************************************************/
-    /*****************************************************************************************************************************************************************************************/
-    /******************************************************REDIRECTION************************************************************************************************************************/
-    /*****************************************************************************************************************************************************************************************/
-    /*****************************************************************************************************************************************************************************************/
 
     /**
      * Redirige l'action d'ajout de programmeur vers le contrôleur AddProgrammerController.
@@ -297,6 +341,11 @@ public class MainController implements Initializable {
         settingsController.updateBdd();
     }
 
+    @FXML
+    public void updateBdd(boolean print) {
+        settingsController.updateBdd(print);
+    }
+
     /**
      * Redirige l'action de suppression de toutes les données de la base de données vers le contrôleur SettingsController.
      */
@@ -312,6 +361,7 @@ public class MainController implements Initializable {
     public void addNProgrammer() {
         settingsController.addNProgrammer(valueAddProgSet.getText());
     }
+
 
 
     /*****************************************************************************************************************************************************************************************/
@@ -799,6 +849,14 @@ public class MainController implements Initializable {
 
     public void setDashboardPane(GridPane dashboardPane) {
         this.dashboardPane = dashboardPane;
+    }
+
+    public ActionDB getBdd() {
+        return bdd;
+    }
+
+    public void setBdd(ActionDB bdd) {
+        this.bdd = bdd;
     }
 
     /**************************************************************************************************************************/

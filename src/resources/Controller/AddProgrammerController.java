@@ -38,41 +38,74 @@ public class AddProgrammerController {
         String prenom = mainController.getFieldForname().getText();
         String nom = mainController.getFieldName().getText();
         String pseudo = mainController.getFieldPseudo().getText();
+        String salaryString = mainController.getFieldSalary().getText().replace(',', '.');
+        String primeString = mainController.getFieldPrime().getText().replace(',', '.');
         String dateString = mainController.getFieldDateBorn().getText();
-        String salaryString = mainController.getFieldSalary().getText();
-        if (salaryString == null || salaryString.isEmpty()) {
-            System.err.println("Salaire non spécifié");
-            return;
+
+        if (validateInputs(prenom, nom, pseudo, salaryString, primeString, dateString)) {
+            Date dateBorn;
+            try {
+                dateBorn = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
+            } catch (ParseException e) {
+                System.err.println("Erreur de format de date");
+                return;
+            }
+
+            Programmeur p = new Programmeur(prenom, nom, dateBorn, Float.parseFloat(salaryString), Float.parseFloat(primeString), pseudo);
+            mainController.getBdd().ajouterProgrammeurWithOut(p);
+            mainController.updatePrint();
+            clearAllField();
+            alertSuccessAdd();
         }
-        float salaire = Float.parseFloat(salaryString);
-        String primeString = mainController.getFieldPrime().getText();
-        if (primeString == null || primeString.isEmpty()) {
-            System.err.println("Prime non spécifié");
-            return;
+    }
+
+    /**
+     * Valide les entrées du formulaire pour l'ajout d'un programmeur.
+     */
+    boolean validateInputs(String prenom, String nom, String pseudo, String salary, String prime, String date) {
+        if (salary.isEmpty() || prime.isEmpty()) {
+            System.err.println("Salaire ou Prime non spécifié");
+            return false;
         }
-        float prime = Float.parseFloat(mainController.getFieldPrime().getText());
-        ActionDB dataDB = new ActionDB();
-
-        dataDB.getConnexion();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Date dateBorn = null;
-        try {
-            dateBorn = sdf.parse(dateString);
-        } catch (ParseException e) {
-            // Gérer l'erreur
-            System.err.println("Erreur de format de date");
-            return;
+        if (!validateString(prenom) || !validateString(nom) || !validateString(pseudo)) {
+            alertError("Entrez uniquement des lettres, espaces, tirets ou apostrophes pour les noms et pseudos.");
+            return false;
         }
+        if (!validateDecimal(salary) || !validateDecimal(prime)) {
+            alertError("Entrez un montant valide.");
+            return false;
+        }
+        if (!date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
+            alertError("Entrez une date valide au format dd-MM-yyyy.");
+            return false;
+        }
+        return true;
+    }
 
-        // Création de l'objet Programmeur
-        Programmeur p = new Programmeur(prenom, nom, dateBorn, salaire, prime, pseudo);
+    /**
+     * Valide une chaîne de caractères pour s'assurer qu'elle contient uniquement des lettres, espaces, tirets ou apostrophes.
+     *
+     * @param s La chaîne à valider.
+     * @return boolean Indique si la chaîne est valide.
+     */
+    private boolean validateString(String s) {
+        return s.matches("^[a-zA-Z\\s-'’]+$");
+    }
 
-        // Appel à la méthode d'ajout de la classe ActionDB
-        dataDB.ajouterProgrammeurWithOut(p);
+    /**
+     * Valide une chaîne de caractères pour s'assurer qu'elle représente un nombre décimal.
+     *
+     * @param s La chaîne à valider.
+     * @return boolean Indique si la chaîne est valide.
+     */
+    private boolean validateDecimal(String s) {
+        return s.matches("^\\d+\\.\\d{1,2}$");
+    }
 
-        // Mise à jour de l'affichage
-        mainController.updatePrint();
-
+    /**
+     * Vide tous les champs du formulaire.
+     */
+    public void clearAllField() {
         // Vider les champs
         mainController.getFieldForname().clear();
         mainController.getFieldName().clear();
@@ -80,13 +113,33 @@ public class AddProgrammerController {
         mainController.getFieldDateBorn().clear();
         mainController.getFieldSalary().clear();
         mainController.getFieldPrime().clear();
+    }
 
+    /**
+     * Affiche une alerte indiquant que le programmeur a été ajouté avec succès.
+     */
+    public void alertSuccessAdd() {
         // Afficher un message de validation
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(null);
         alert.setContentText("Le programmeur a été ajouté avec succès!");
 
+        alert.showAndWait();
+    }
+
+    /**
+     * Affiche une alerte d'erreur avec un message spécifique.
+     *
+     * @param message Le message d'erreur à afficher.
+     */
+    public void alertError(String message)
+    {
+        Alert alert;
+        alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 

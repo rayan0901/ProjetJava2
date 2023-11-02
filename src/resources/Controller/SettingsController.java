@@ -28,14 +28,10 @@ public class SettingsController {
      * Cette méthode rafraîchit également les informations sur l'interface utilisateur.
      */
     public void updateBdd(){
-        ActionDB DataBdd;
-        DataBdd = new ActionDB();
-        DataBdd.getConnexion();
-
         mainController.updatePrint();
-        mainController.getLabelNombreProgrammer().setText(DataBdd.getNumberOfProgrammerString());
-        mainController.getLabelPrimeMoyen().setText(DataBdd.getPrimeMoyenneString() + "€");
-        mainController.getLabelSalaireMoyen().setText(DataBdd.getSalaireMoyenString() + "€");
+        mainController.getLabelNombreProgrammer().setText(mainController.getBdd().getNumberOfProgrammerString());
+        mainController.getLabelPrimeMoyen().setText(mainController.getBdd().getPrimeMoyenneString() + "€");
+        mainController.getLabelSalaireMoyen().setText(mainController.getBdd().getSalaireMoyenString() + "€");
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
@@ -50,14 +46,10 @@ public class SettingsController {
      * @param print indicateur pour savoir si l'opération doit être imprimée.
      */
     public void updateBdd(boolean print){
-        ActionDB DataBdd;
-        DataBdd = new ActionDB();
-        DataBdd.getConnexion();
-
         mainController.updatePrint();
-        mainController.getLabelNombreProgrammer().setText(DataBdd.getNumberOfProgrammerString());
-        mainController.getLabelPrimeMoyen().setText(DataBdd.getPrimeMoyenneString() + "€");
-        mainController.getLabelSalaireMoyen().setText(DataBdd.getSalaireMoyenString() + "€");
+        mainController.getLabelNombreProgrammer().setText(mainController.getBdd().getNumberOfProgrammerString());
+        mainController.getLabelPrimeMoyen().setText(mainController.getBdd().getPrimeMoyenneString() + "€");
+        mainController.getLabelSalaireMoyen().setText(mainController.getBdd().getSalaireMoyenString() + "€");
     }
 
     /**
@@ -65,11 +57,7 @@ public class SettingsController {
      * Une boîte de dialogue d'information ou d'erreur apparaît pour indiquer le résultat de l'opération.
      */
     public void AllDeleteBdd() {
-        ActionDB DataBdd;
-        DataBdd = new ActionDB();
-        DataBdd.getConnexion();
-
-        Statement statement = DataBdd.getConnexion();
+        Statement statement = mainController.getBdd().getConnexion();
         String sql = "DELETE FROM programmeur";
 
         try {
@@ -106,9 +94,6 @@ public class SettingsController {
      */
     public void addNProgrammer(String n)
     {
-        ActionDB DataBdd;
-        DataBdd = new ActionDB();
-        DataBdd.getConnexion();
         int nombre;
 
         try
@@ -116,7 +101,7 @@ public class SettingsController {
             nombre = Integer.parseInt(n);
             if (nombre > 0 && nombre <= 1000)
             {
-                DataBdd.fillBdd(nombre);
+                mainController.getBdd().fillBdd(nombre);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Information");
                 alert.setHeaderText(null);

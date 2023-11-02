@@ -1,10 +1,6 @@
 package Projet;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,6 +34,15 @@ public class ActionDB {
             throw new RuntimeException(e);
         }
         return statement;
+    }
+
+    public Connection getConnexion(int i) {
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return connection;
     }
 
     /**
@@ -197,42 +202,45 @@ public class ActionDB {
      * @throws SQLException Si une erreur survient lors de l'exécution de la requête SQL.
      */
     public void fillBdd(int n) {
-        Statement statement = getConnexion();
-
+        Connection conn = getConnexion(0);
         Faker faker = new Faker();
-        for (int i = 0; i < n; i++) {
-            Programmeur p = new Programmeur();
 
-            p.setPrenom(faker.name().firstName());
-            p.setNom(faker.name().lastName());
-            p.setDate(faker.date().birthday()); // Supposant que getDate() renvoie un Date
-            p.setSalaire((float) faker.number().randomDouble(2, 3000, 7000));
-            p.setPrime((float) faker.number().randomDouble(2, 0, 2000));
-            p.setPseudo(faker.name().username());
-            p.setCreatedAt(new Date()); // La date actuelle
-            p.setUpdateAt(new Date()); // La date actuelle
+        String sql = "INSERT INTO programmeur (prenom, nom, DATE_DE_NAISSANCE, salaire, prime, pseudo, createdAt, updateAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            SimpleDateFormat sdfMySQL = new SimpleDateFormat("yyyy-MM-dd");
-            String dateMySQL = sdfMySQL.format(p.getDate());
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            for (int i = 0; i < n; i++) {
+                Programmeur p = new Programmeur();
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String formattedCreatedAt = sdf.format(p.getCreatedAt());
-            String formattedUpdatedAt = sdf.format(p.getUpdateAt());
+                p.setPrenom(faker.name().firstName());
+                p.setNom(faker.name().lastName());
+                p.setDate(faker.date().birthday());
+                p.setSalaire((float) faker.number().randomDouble(2, 3000, 7000));
+                p.setPrime((float) faker.number().randomDouble(2, 0, 2000));
+                p.setPseudo(faker.name().username());
+                p.setCreatedAt(new Date());
+                p.setUpdateAt(new Date());
 
-            String sql = "INSERT INTO programmeur (prenom, nom, DATE_DE_NAISSANCE, salaire, prime, pseudo, createdAt, updateAt) VALUES ('" +
-                    p.getPrenom() + "', '" + p.getNom() + "', '" + dateMySQL + "', " + p.getSalaire() + ", " + p.getPrime() + ", '" + p.getPseudo() + "', '" + formattedCreatedAt + "', '" + formattedUpdatedAt + "')";
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-            try {
-                int rowsInserted = statement.executeUpdate(sql);
+                ((PreparedStatement) preparedStatement).setString(1, p.getPrenom());
+                preparedStatement.setString(2, p.getNom());
+                preparedStatement.setString(3, sdf.format(p.getDate()));
+                preparedStatement.setFloat(4, p.getSalaire());
+                preparedStatement.setFloat(5, p.getPrime());
+                preparedStatement.setString(6, p.getPseudo());
+                preparedStatement.setString(7, sdf.format(p.getCreatedAt()));
+                preparedStatement.setString(8, sdf.format(p.getUpdateAt()));
+
+                int rowsInserted = preparedStatement.executeUpdate();
 
                 if (rowsInserted > 0) {
-                    System.out.println("Le programmeur a été ajouté à la base de données.");
+                    //System.out.println("Le programmeur a été ajouté à la base de données.");
                 } else {
                     System.out.println("Fail : le programmeur n'a pas pu être ajouté.");
                 }
-            } catch (SQLException e) {
-                System.err.println("Erreur lors de l'ajout du programmeur : " + e.getMessage());
             }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de l'ajout du programmeur : " + e.getMessage());
         }
     }
 
@@ -308,13 +316,13 @@ public class ActionDB {
      *
      * @throws SQLException Si une erreur survient lors de l'exécution de la requête SQL.
      */
-    public void updateProgrammeurById(int id, String nom, String prenom, Date dateNaissance, float salaire, float prime) {
+    public void updateProgrammeurById(int id, String nom, String prenom, String pseudo, Date dateNaissance, float salaire, float prime) {
         Statement statement = getConnexion();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateNaissanceStr = sdf.format(dateNaissance);
 
-        String query = "UPDATE programmeur SET nom = '" + nom + "', prenom = '" + prenom + "', date_de_naissance = '" + dateNaissanceStr + "', salaire = " + salaire + ", prime = " + prime + " WHERE id = " + id;
+        String query = "UPDATE programmeur SET nom = '" + nom + "', prenom = '" + prenom + "', date_de_naissance = '" + dateNaissanceStr + "', pseudo = '" + pseudo + "', salaire = " + salaire + ", prime = " + prime + " WHERE id = " + id;
 
         try {
             int rowsUpdated = statement.executeUpdate(query);

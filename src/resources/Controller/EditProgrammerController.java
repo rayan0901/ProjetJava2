@@ -36,30 +36,6 @@ public class EditProgrammerController {
 
     private int idCourant = -1;
 
-    /**
-     * Définit le contrôleur principal et initialise les champs.
-     * @param mainController Référence vers le MainController.
-     */
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-        this.idCourant = mainController.getIdCourant();
-        this.CurrentPane = mainController.getCurrentPane();
-    }
-
-    /**
-     * Met à jour les informations du MainController.
-     */
-    public void updateMainController() {
-        this.idCourant = mainController.getIdCourant();
-        this.CurrentPane = mainController.getCurrentPane();
-        this.fieldNameEdit = mainController.getFieldNameEdit();
-        this.fieldFornameEdit = mainController.getFieldFornameEdit();
-        this.fieldPseudoEdit = mainController.getFieldPseudoEdit();
-        this.FieldDateBornEdit = mainController.getFieldDateBornEdit();
-        this.fieldSalaryEdit = mainController.getFieldSalaryEdit();
-        this.fieldPrimeEdit = mainController.getFieldPrimeEdit();
-    }
-
 
     /**
      * Modifie un programmeur existant dans la base de données.
@@ -74,23 +50,15 @@ public class EditProgrammerController {
         String prenom = fieldFornameEdit.getText();
         String pseudo = fieldPseudoEdit.getText();
         String dateString = FieldDateBornEdit.getText();
-
         String salaryString = fieldSalaryEdit.getText();
-        if (salaryString == null || salaryString.isEmpty()) {
-            System.err.println("Salaire non spécifié");
-            return;
-        }
-        float salaire = Float.parseFloat(salaryString);
-
         String primeString = fieldPrimeEdit.getText();
-        if (primeString == null || primeString.isEmpty()) {
-            System.err.println("Prime non spécifié");
+
+        if (!mainController.getAddProgrammerController().validateInputs(prenom, nom, pseudo, salaryString, primeString, dateString)) {
             return;
         }
-        float prime = Float.parseFloat(primeString);
 
-        ActionDB dataDB = new ActionDB();
-        Statement statement = dataDB.getConnexion();
+        float salaire = Float.parseFloat(salaryString);
+        float prime = Float.parseFloat(primeString);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date dateNaissance = null;
@@ -102,27 +70,16 @@ public class EditProgrammerController {
             return;
         }
 
-        dataDB.updateProgrammeurById(id, nom, prenom, dateNaissance, salaire, prime);
+        mainController.getBdd().updateProgrammeurById(id, nom, prenom, pseudo, dateNaissance, salaire, prime);
 
-        // Vider les champs après la mise à jour
-        fieldNameEdit.clear();
-        fieldFornameEdit.clear();
-        fieldPseudoEdit.clear();
-        FieldDateBornEdit.clear();
-        fieldSalaryEdit.clear();
-        fieldPrimeEdit.clear();
+        clearAll();
 
-        // Afficher un message de validation
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText("Le programmeur a été modifié avec succès!");
+        alertSuccess();
 
         mainController.updatePrint();
         mainController.visibleFalseAll();
         CurrentPane = this.mainController.getMainListePane();
         CurrentPane.setVisible(true);
-        alert.showAndWait();
     }
 
     /**
@@ -135,9 +92,7 @@ public class EditProgrammerController {
         mainController.visibleFalseAll();
         CurrentPane = this.mainController.getMainListePane();
         CurrentPane.setVisible(false);
-        ActionDB dataDB = new ActionDB();
-        dataDB.getConnexion();
-        Programmeur p = dataDB.getProgrammeurById(idCourant);
+        Programmeur p = mainController.getBdd().getProgrammeurById(idCourant);
 
         if (p != null) {
             if (p.getPrenom() != null) {
@@ -191,5 +146,48 @@ public class EditProgrammerController {
 
             alert.showAndWait();
         }
+    }
+
+    /**
+     * Définit le contrôleur principal et initialise les champs.
+     * @param mainController Référence vers le MainController.
+     */
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+        this.idCourant = mainController.getIdCourant();
+        this.CurrentPane = mainController.getCurrentPane();
+    }
+
+    /**
+     * Met à jour les informations du MainController.
+     */
+    public void updateMainController() {
+        this.idCourant = mainController.getIdCourant();
+        this.CurrentPane = mainController.getCurrentPane();
+        this.fieldNameEdit = mainController.getFieldNameEdit();
+        this.fieldFornameEdit = mainController.getFieldFornameEdit();
+        this.fieldPseudoEdit = mainController.getFieldPseudoEdit();
+        this.FieldDateBornEdit = mainController.getFieldDateBornEdit();
+        this.fieldSalaryEdit = mainController.getFieldSalaryEdit();
+        this.fieldPrimeEdit = mainController.getFieldPrimeEdit();
+    }
+
+    public void clearAll() {
+        // Vider les champs après la mise à jour
+        fieldNameEdit.clear();
+        fieldFornameEdit.clear();
+        fieldPseudoEdit.clear();
+        FieldDateBornEdit.clear();
+        fieldSalaryEdit.clear();
+        fieldPrimeEdit.clear();
+    }
+
+    public void alertSuccess() {
+        // Afficher un message de validation
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText("Le programmeur a été modifié avec succès!");
+        alert.showAndWait();
     }
 }
