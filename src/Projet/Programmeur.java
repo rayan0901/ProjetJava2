@@ -107,53 +107,52 @@ public class Programmeur {
         sdfMySQL = new SimpleDateFormat("yyyy-MM-dd");  // pour MySQL
         date = null;
 
-        System.out.println("Ajoutons un nouveau programmeur");
+        System.out.println("Ajoutons un nouveau programmeur.");
         do {
-            System.out.println("Entrez son prénom :");
+            System.out.print("Entrez son prénom : ");
             prenom = sc.next();
             if (prenom.length() > 255) {
                 System.out.println("Oups, c'est trop long. Veuillez réessayer.");
             }
         } while (prenom.length() > 255);
-        prenom = prenom.substring(0, Math.min(prenom.length(), 255));
 
         do {
-            System.out.println("Entrez son nom :");
+            System.out.print("Entrez son nom : ");
             nom = sc.next();
             if (nom.length() > 255) {
                 System.out.println("Oups, c'est trop long. Veuillez réessayer.");
             }
         } while (nom.length() > 255);
-        nom = nom.substring(0, Math.min(nom.length(), 255));
 
         sc.nextLine(); // Pour consommer le caractère de nouvelle ligne restant
 
         while (date == null) {
-            System.out.println("Entrez la date de naissance au format dd/MM/yyyy: ");
+            System.out.print("Entrez la date de naissance au format dd/MM/yyyy : ");
             dateStr = sc.nextLine();
             try {
                 date = sdf.parse(dateStr);
                 dateMySQL = sdfMySQL.format(date);  // pour MySQL
-                System.out.println("Date de naissance en format MySQL: " + dateMySQL);
+                System.out.println("Date de naissance entrée en format MySQL : " + dateMySQL);
             } catch (Exception e) {
                 System.out.println("Format de date incorrect, essayez encore.");
             }
         }
 
         do {
-            System.out.println("Entrez son pseudo :");
+            System.out.print("Entrez son pseudo : ");
             pseudo = sc.next();
             if (pseudo.length() > 255) {
                 System.out.println("Oups, c'est trop long. Veuillez réessayer.");
             }
         } while (pseudo.length() > 255);
-        pseudo = pseudo.substring(0, Math.min(pseudo.length(), 255));  // Limité à 255 caractères comme indiqué
-        System.out.println("Entrez son salaire :");
+        System.out.print("Entrez son salaire : ");
         salaire = helper.askFloat();
-        System.out.println("Entrez sa prime :");
+        System.out.print("Entrez sa prime : ");
         prime = helper.askFloat();
 
         p = new Programmeur(prenom, nom, date, salaire, prime, pseudo);
+
+        System.out.println("AJOUT REUSSI !");
 
         return p;
     }

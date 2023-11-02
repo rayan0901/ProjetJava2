@@ -16,9 +16,9 @@ public class ActionDB {
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
-    private String url = "jdbc:mysql://localhost:3306/bdprojetjava";
+    private String url = "jdbc:mysql://localhost:3306/bdtpjava";
     private String user = "root";
-    private String password = "user";
+    private String password = "sqlHello!6894210";
 
     /**
      * Établit une connexion à la base de données et renvoie un objet Statement pour exécuter des requêtes SQL.
@@ -74,7 +74,7 @@ public class ActionDB {
     public void afficheProgrammeurs(){
         ArrayList<Programmeur> listeProgrammeurs = recupProgrammeurs();
         // Afficher tous les programmeurs
-        System.out.println("On affiche les programmeurs :");
+        //System.out.println("On affiche les programmeurs :");
         for (Programmeur programmeur : listeProgrammeurs) {
             System.out.println(programmeur.toString());
         }
@@ -87,7 +87,7 @@ public class ActionDB {
      */
     public void afficheSelectProgrammeurs(ArrayList<Programmeur> listeProgrammeurs){
         // Afficher tous les programmeurs
-        System.out.println("On affiche les programmeurs sélectionnés :");
+        //System.out.println("On affiche les programmeurs sélectionnés :");
         for (Programmeur programmeur : listeProgrammeurs) {
             System.out.println(programmeur);
         }
@@ -109,7 +109,9 @@ public class ActionDB {
                 return ;
             }
         }
-        System.out.println("Aucun programmeur trouvé pour cet id.");
+        System.out.print("Recherche KO. Saisissez à nouveau l'id : ");
+        int idPrint = helper.askInteger();
+        this.printProgrammeurById(idPrint);
         return ;
     }
 
@@ -124,9 +126,11 @@ public class ActionDB {
             int rowsDeleted = statement.executeUpdate("DELETE FROM programmeur WHERE id = " + id);
 
             if (rowsDeleted > 0) {
-                System.out.println("Le programmeur a été supprimé de la base de données.");
+                System.out.println("SUPPRESSION REUSSIE !");
             } else {
-                System.out.println("Aucun programmeur trouvé pour cet ID.");
+                System.out.print("Supression KO. Saisissez à nouveau l'id : ");
+                int idDelete = helper.askInteger();
+                this.deleteProgrammeurById(idDelete);
             }
         } catch (SQLException e) {
             System.err.println("Erreur lors de la suppression du programmeur : " + e.getMessage());
@@ -142,12 +146,12 @@ public class ActionDB {
 
         for (Programmeur programmeur : listProgrammeur) {
             if (programmeur.getId() == id) {
-                System.out.println("Quel est le nouveau salaire du programmeur n°" + id + " ?");
+                System.out.print("Nouveau salaire du programmeur n°" + id + " : ");
                 float salaire = helper.askFloat();
 
                 try {
                     statement.executeUpdate("UPDATE programmeur SET salaire = " + salaire + " WHERE id = " + id);
-                    System.out.println("Le salaire a bien été modifié.");
+                    System.out.println("MODIFICATION REUSSIE !");
                     return;
                 } catch (SQLException e) {
                     System.err.println("Erreur lors de la mise à jour du salaire : " + e.getMessage());
@@ -155,7 +159,9 @@ public class ActionDB {
                 }
             }
         }
-        System.out.println("Aucun programmeur trouvé pour cet id.");
+        System.out.print("Programmeur introuvable. Saisissez à nouveau l'id : ");
+        int idModifSalaire = helper.askInteger();
+        this.updateSalaireProgrammeurById(idModifSalaire);
     }
 
     /**
@@ -179,7 +185,7 @@ public class ActionDB {
             int rowsInserted = statement.executeUpdate(sql);
 
             if (rowsInserted > 0) {
-                System.out.println("Le programmeur a été ajouté à la base de données.");
+                //System.out.println("Le programmeur a été ajouté à la base de données.");
             } else {
                 System.out.println("Fail : le programmeur n'a pas pu être ajouté.");
             }
@@ -272,7 +278,7 @@ public class ActionDB {
             int rowsInserted = statement.executeUpdate(sql);
 
             if (rowsInserted > 0) {
-                System.out.println("Le programmeur a été ajouté à la base de données.");
+                //System.out.println("Le programmeur a été ajouté à la base de données.");
             } else {
                 System.out.println("Fail : le programmeur n'a pas pu être ajouté.");
             }
