@@ -10,10 +10,11 @@ import javafx.stage.Stage;
 public class Start extends Application{
 
     public static void main(String[] args) {
-        launch(args);  // Méthode pour lancer l'application JavaFX
+        //launch(args);  // Méthode pour lancer l'application JavaFX
+        Menu menu = new Menu();
+        menu.execution();
+        System.exit(0);
     }
-    /* Menu menu = new Menu();
-        menu.execution();*/
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../resources/fmxl/home.fxml"));

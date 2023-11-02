@@ -14,12 +14,12 @@ public class helper
         int choice = 0; // Vous pouvez initialiser cette variable avec une valeur par défaut
 
         while (true) {
-            System.out.print("Veuillez entrer un entier : ");
+            //System.out.print("Veuillez entrer un entier : ");
             if (sc.hasNextInt()) {
                 choice = sc.nextInt();
                 break; // Sort de la boucle si l'entrée est un entier valide
             } else {
-                System.out.println("Ce n'est pas un entier. Réessayez.");
+                System.out.print("Ce n'est pas un entier. Réessayez : ");
                 sc.nextLine(); // Nettoie la ligne incorrecte de l'entrée
             }
         }
@@ -36,12 +36,12 @@ public class helper
         String choice = null; // Vous pouvez initialiser cette variable avec une valeur par défaut
 
         while (true) {
-            System.out.print("Veuillez entrer une chaine de caractère : ");
+            //System.out.print("Veuillez entrer une chaine de caractère : ");
             if (sc.hasNextLine()) {
                 choice = sc.nextLine();
                 break; // Sort de la boucle si l'entrée est un entier valide
             } else {
-                System.out.println("Ce n'est pas une chaine de caractère valide. Réessayez.");
+                System.out.print("Ce n'est pas une chaine de caractère valide. Réessayez : ");
                 sc.nextLine(); // Nettoie la ligne incorrecte de l'entrée
             }
         }
@@ -58,13 +58,13 @@ public class helper
         float choice = 0; // Vous pouvez initialiser cette variable avec une valeur par défaut
 
         while (true) {
-            System.out.print("Veuillez entrer un float : ");
+            //System.out.print("Veuillez entrer un float : ");
             if (sc.hasNextFloat()) {
                 choice = sc.nextFloat();
-                break; // Sort de la boucle si l'entrée est un entier valide
+                break; // Sort de la boucle si l'entrée est un float valide
             } else {
-                System.out.println("Ce n'est pas une float valide. Réessayez.");
-                sc.nextFloat(); // Nettoie la ligne incorrecte de l'entrée
+                System.out.print("Ce n'est pas un float valide. Réessayez : ");
+                sc.nextLine(); // Nettoie la ligne incorrecte de l'entrée
             }
         }
         return choice;
