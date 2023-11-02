@@ -3,6 +3,17 @@
 
 Bienvenue sur ProjetJava, une application CRUD développée en JavaFX. 😊
 
+## 📑 Sommaire
+1. [Structure de l'architecture](#structure-de-larchitecture)
+2. [Description du Projet](#description-du-projet)
+3. [Classe Programmeur](#classe-programmeur)
+4. [Fonctionnalités](#fonctionnalités)
+5. [Technologie utilisée](#technologie-utilisée)
+6. [Architecture du code](#architecture-du-code)
+7. [Configuration nécessaire](#configuration-nécessaire)
+8. [Comment utiliser ce projet](#comment-utiliser-ce-projet)
+9. [Conclusion](#conclusion)
+
 📂 **Structure de l'architecture** 
 - 📁 `.idea`: Configuration et métadonnées de IntelliJ IDEA.
 - 📁 `lib`: Contient les SDKs JavaFX pour différentes plateformes.
