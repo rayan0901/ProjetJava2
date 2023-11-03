@@ -8,6 +8,31 @@ mdp
 requêtes
  */
 public class Constantes {
-    public static String url = "jdbc:mysql://localhost:3306/bdtpjava";
-    public static String user = "";
+    private String url = "jdbc:mysql://localhost:3306/bdprojetjava";
+    private String user = "root";
+    private String password = "user";
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

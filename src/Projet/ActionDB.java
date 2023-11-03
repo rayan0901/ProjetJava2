@@ -4,21 +4,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import com.github.javafaker.Faker;
+import data.ActionBDDImpl;
+import utils.Constantes;
 import utils.helper;
 
 /**
  * Cette classe gère les interactions avec la base de données pour récupérer et afficher les informations
  * sur les programmeurs.
  */
-public class ActionDB {
+public class ActionDB implements ActionBDDImpl {
     private Connection connection;
     private Statement statement;
-    private ResultSet resultSet;
-    private String url = "jdbc:mysql://localhost:3306/bdprojetjava";
-    private String user = "root";
-    private String password = "user";
+
+    private Constantes constantes = new Constantes();
 
     /**
      * Établit une connexion à la base de données et renvoie un objet Statement pour exécuter des requêtes SQL.
@@ -28,21 +27,12 @@ public class ActionDB {
      */
     public Statement getConnexion(){
         try {
-            connection = DriverManager.getConnection(url, user, password);
+            connection = DriverManager.getConnection(constantes.getUrl(), constantes.getUser(), constantes.getPassword());
             statement = connection.createStatement();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return statement;
-    }
-
-    public Connection getConnexion(int i) {
-        try {
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return connection;
     }
 
     /**
@@ -501,6 +491,15 @@ public class ActionDB {
             System.err.println("Erreur lors de la récupération des derniers programmeurs : " + e.getMessage());
         }
         return derniersProgrammeurs;
+    }
+
+    public Connection getConnexion(int i) {
+        try {
+            connection = DriverManager.getConnection(constantes.getUrl(), constantes.getUser(), constantes.getPassword());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return connection;
     }
 
 }
